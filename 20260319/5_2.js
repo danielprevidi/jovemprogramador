@@ -3,4 +3,4 @@
     return resultado;
 };
 
-console.log(dobroLet(5)); // Saída: 10
+console.log(dobroLet(10)); // Saída: 10
