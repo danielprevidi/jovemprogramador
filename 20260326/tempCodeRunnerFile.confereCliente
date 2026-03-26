@@ -1,0 +1,11 @@
+let cliente = Daniel 
+let saldoLimitePrazo = 0
+let telefone = 989183451
+let situacao = Ativo
+
+
+if (cliente !== "") {
+    console.log("O cliente possui cadastro"); 
+} else {
+    console.log ("Cliente não cadastrado.");
+}
