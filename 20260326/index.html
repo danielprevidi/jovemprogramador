@@ -6,9 +6,52 @@
 <body>
 
 <script>
-let nome = prompt("Digite seu nome:");
-let idade = prompt("Digite sua idade:");
-alert(`Olá, ${nome}! Você tem ${idade} anos.`);
+  // Menu principal
+let menu = prompt("Selecione o tipo de bebida:\n1 - Bebidas quentes\n2 - Bebidas geladas");
+
+if (menu === "1") {
+    // Bebidas quentes
+    let quentes = prompt("Escolha uma bebida quente:\n1 - Café\n2 - Chá\n3 - Chocolate quente");
+
+    switch (quentes) {
+        case "1":
+            bebidaEscolhida = "Café";
+            break;
+        case "2":
+            bebidaEscolhida = "Chá";
+            break;
+        case "3":
+            console.log("Você escolheu Chocolate quente");
+            break;
+        default:
+            console.log("Opção inválida");
+            break;
+    }
+
+} else if (menu === "2") {
+    // Bebidas geladas
+    let geladas = prompt("Escolha uma bebida gelada:\n1 - Suco\n2 - Refrigerante\n3 - Água");
+
+    switch (geladas) {
+        case "1":
+            console.log("Você escolheu Suco");
+            break;
+        case "2":
+            console.log("Você escolheu Refrigerante");
+            break;
+        case "3":
+            console.log("Você escolheu Água");
+            break;
+        default:
+            console.log("Opção inválida");
+            break;
+    }
+
+} else {
+    console.log("Opção de menu inválida");
+}
+
+alert(`Você escolheu, ${bebidaEscolhida}!`);
 </script>
 
 </body>
