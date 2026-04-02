@@ -1,0 +1,7 @@
+// Pegar elemento e mudar texto
+const btn = document.querySelector("#meuBotao");
+
+btn.addEventListener("click", () => {
+  document.querySelector("h1").textContent = "Clicou!";
+  btn.style.background = "green";
+});
