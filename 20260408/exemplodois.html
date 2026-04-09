@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PROGRAMA DANIEL</title>
+</head>
+<body>
+
+  <input id="meuInput" placeholder="Digite SEU NOME" />
+  <button id="meuBotao" onclick="processar()">Clique Aqui</button>
+  <p id="resultado"></p>
+
+  <script>
+    function processar() {
+      const valor = document.getElementById("meuInput").value;
+      document.getElementById("resultado").innerHTML = valor;
+    }
+  </script>
+
+</body>
+</html>

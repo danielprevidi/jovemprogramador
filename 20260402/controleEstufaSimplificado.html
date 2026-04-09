@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Estufa</title>
+</head>
+<body>
+
+<h2>Controle de Temperatura da Estufa</h2>
+<p>Temperatura inicial: 26°C</p>
+<p>Escolha uma opção:</p>
+<p>1 - Aumentar temperatura</p>
+<p>2 - Reduzir temperatura</p>
+<p>3 - Mostrar temperatura atual</p>
+<p>4 - Sair</p>
+
+<script>
+  let temperatura = 22;
+
+  let opcao = prompt("Digite a opção (1, 2, 3 ou 4):");
+
+  if (opcao === "1") {
+    temperatura++;
+    alert("Temperatura aumentada para: " + temperatura + "°C");
+    if (temperatura < 15) {
+      alert("AVISO: Temperatura muito baixa! Risco para as plantas.");
+    } else if (temperatura > 30) {
+      alert("AVISO: Temperatura muito alta! Risco para as plantas.");
+    } else {
+      alert("Temperatura ideal.");
+    }
+  } else if (opcao === "2") {
+    temperatura--;
+    alert("Temperatura reduzida para: " + temperatura + "°C");
+    if (temperatura < 15) {
+      alert("AVISO: Temperatura muito baixa! Risco para as plantas.");
+    } else if (temperatura > 30) {
+      alert("AVISO: Temperatura muito alta! Risco para as plantas.");
+    } else {
+      alert("Temperatura ideal.");
+    }
+  } else if (opcao === "3") {
+    alert("Temperatura atual: " + temperatura + "°C");
+    if (temperatura < 15) {
+      alert("AVISO: Temperatura muito baixa! Risco para as plantas.");
+    } else if (temperatura > 30) {
+      alert("AVISO: Temperatura muito alta! Risco para as plantas.");
+    } else {
+      alert("Temperatura ideal.");
+    }
+  } else if (opcao === "4") {
+    alert("Sistema encerrado.");
+  } else {
+    alert("Opção inválida!");
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<body>
+
+  <h2>Calculadora Simples</h2>
+
+  <div id="entradas">
+    <input id="Valor1" placeholder="Valor 1" />
+    <input id="Valor2" placeholder="Valor 2" />
+  </div>
+
+  <br>
+
+  <div id="botao">
+    <button onclick="processar()">Calcular</button>
+  </div>
+
+  <br>
+
+  <div id="saida">
+    <b>Resultado:</b>
+    <p id="resultado"></p>
+  </div>
+
+  <script>
+    function processar() {
+      const valor1 = document.getElementById("Valor1").value;
+      const valor2 = document.getElementById("Valor2").value;
+      document.getElementById("resultado").innerHTML = valor1 * valor2;
+    }
+  </script>
+
+</body>

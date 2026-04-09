@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Temperatura - Estufa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --panel: #161b22;
+      --border: #30363d;
+      --green: #39d353;
+      --green-dim: #1a4a28;
+      --amber: #e3a007;
+      --amber-dim: #3d2c00;
+      --red: #f85149;
+      --red-dim: #3d0c09;
+      --blue: #58a6ff;
+      --text: #e6edf3;
+      --muted: #7d8590;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Barlow', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 11px;
+      font-family: var(--mono);
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .header h2 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    /* Termômetro grande */
+    .thermo-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s;
+    }
+
+    .thermo-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background: radial-gradient(circle at 50% 0%, #fff, transparent 70%);
+      pointer-events: none;
+    }
+
+    .temp-initial-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .temp-initial-wrap label {
+      font-size: 13px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .temp-initial-wrap input[type="number"] {
+      width: 90px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 18px;
+      padding: 6px 12px;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .temp-initial-wrap input[type="number"]:focus {
+      border-color: var(--blue);
+    }
+
+    .temp-big {
+      font-family: var(--mono);
+      font-size: 80px;
+      line-height: 1;
+      transition: color 0.4s;
+    }
+
+    .temp-unit {
+      font-size: 28px;
+      color: var(--muted);
+      vertical-align: super;
+      font-weight: 300;
+    }
+
+    /* Barra de status */
+    .bar-wrap {
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .bar-track {
+      height: 6px;
+      background: #21262d;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s ease, background 0.4s;
+    }
+
+    .bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      font-family: var(--mono);
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    /* Alerta */
+    .alert {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: var(--mono);
+      margin-top: 1.2rem;
+      transition: all 0.3s;
+    }
+
+    .alert.frio   { background: #0d1b27; border: 1px solid #1f6feb; color: #58a6ff; }
+    .alert.ideal  { background: var(--green-dim); border: 1px solid #238636; color: var(--green); }
+    .alert.quente { background: var(--red-dim); border: 1px solid #da3633; color: var(--red); }
+
+    .alert-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: pulse 1.5s infinite;
+    }
+
+    .frio .alert-dot   { background: var(--blue); }
+    .ideal .alert-dot  { background: var(--green); animation: none; }
+    .quente .alert-dot { background: var(--red); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* Botões de menu */
+    .menu {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 14px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      text-align: left;
+    }
+
+    .btn:hover { background: #1c2128; border-color: #484f58; }
+    .btn:active { transform: scale(0.97); }
+
+    .btn.danger { grid-column: 1 / -1; justify-content: center; }
+    .btn.danger:hover { border-color: var(--red); color: var(--red); }
+
+    .btn-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .btn-num {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* Log */
+    .log-wrap {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .log-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .log-header span {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+    .dot.r { background: #f85149; }
+    .dot.y { background: #e3a007; }
+    .dot.g { background: #39d353; }
+
+    .log-body {
+      padding: 12px 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      max-height: 160px;
+      overflow-y: auto;
+      line-height: 1.8;
+    }
+
+    .log-body::-webkit-scrollbar { width: 4px; }
+    .log-body::-webkit-scrollbar-track { background: transparent; }
+    .log-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .log-line { color: var(--muted); }
+    .log-line.info  { color: var(--blue); }
+    .log-line.ok    { color: var(--green); }
+    .log-line.warn  { color: var(--red); }
+    .log-line.exit  { color: var(--muted); font-style: italic; }
+
+    .encerrado { opacity: 0.35; pointer-events: none; }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <h1>// sistema de monitoramento</h1>
+    <h2>Controle de Estufa</h2>
+  </div>
+
+  <!-- Card principal -->
+  <div class="thermo-card" id="thermoCard">
+    <div class="temp-initial-wrap">
+      <label>temp. inicial:</label>
+      <input type="number" id="inputTemp" value="31" min="-20" max="99" />
+      <button class="btn" style="padding:6px 14px; font-size:13px;" onclick="definirTemp()">OK</button>
+    </div>
+
+    <div>
+      <span class="temp-big" id="tempVal">31</span>
+      <span class="temp-unit">°C</span>
+    </div>
+
+    <div class="bar-wrap">
+      <div class="bar-track">
+        <div class="bar-fill" id="barFill"></div>
+      </div>
+      <div class="bar-labels">
+        <span>0°C</span><span>15°C</span><span>30°C</span><span>50°C</span>
+      </div>
+    </div>
+
+    <div class="alert" id="alertBox">
+      <div class="alert-dot"></div>
+      <span id="alertMsg"></span>
+    </div>
+  </div>
+
+  <!-- Menu -->
+  <div class="menu" id="menu">
+    <button class="btn" onclick="opcao1()">
+      <span class="btn-icon">▲</span> Aumentar
+      <span class="btn-num">1</span>
+    </button>
+    <button class="btn" onclick="opcao2()">
+      <span class="btn-icon">▼</span> Reduzir
+      <span class="btn-num">2</span>
+    </button>
+    <button class="btn" onclick="opcao3()">
+      <span class="btn-icon">◉</span> Mostrar temperatura
+      <span class="btn-num">3</span>
+    </button>
+    <button class="btn danger" onclick="opcao4()">
+      <span class="btn-icon">✕</span> Sair
+      <span class="btn-num">4</span>
+    </button>
+  </div>
+
+  <!-- Log -->
+  <div class="log-wrap">
+    <div class="log-header">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <span>console.log</span>
+    </div>
+    <div class="log-body" id="log">
+      <div class="log-line ok">> Sistema iniciado. Temperatura: 31°C</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let temperatura = 31;
+
+  function definirTemp() {
+    let val = parseInt(document.getElementById('inputTemp').value);
+    if (isNaN(val)) return;
+    temperatura = val;
+    atualizarDisplay();
+    addLog('Temperatura inicial definida para: ' + temperatura + '°C', 'info');
+  }
+
+  function addLog(msg, tipo) {
+    const log = document.getElementById('log');
+    const d = document.createElement('div');
+    d.className = 'log-line ' + (tipo || '');
+    d.textContent = '> ' + msg;
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function verificarRisco() {
+    if (temperatura < 15) {
+      addLog('AVISO: Temperatura muito baixa! Risco para as plantas.', 'warn');
+    } else if (temperatura > 30) {
+      addLog('AVISO: Temperatura muito alta! Risco para as plantas.', 'warn');
+    } else {
+      addLog('Temperatura ideal.', 'ok');
+    }
+  }
+
+  function atualizarDisplay() {
+    document.getElementById('tempVal').textContent = temperatura;
+
+    const pct = Math.min(Math.max((temperatura / 50) * 100, 0), 100);
+    const bar = document.getElementById('barFill');
+    const val = document.getElementById('tempVal');
+    const card = document.getElementById('thermoCard');
+    const alert = document.getElementById('alertBox');
+    const msg = document.getElementById('alertMsg');
+
+    bar.style.width = pct + '%';
+
+    if (temperatura < 15) {
+      bar.style.background = '#58a6ff';
+      val.style.color = '#58a6ff';
+      card.style.borderColor = '#1f6feb';
+      alert.className = 'alert frio';
+      msg.textContent = 'RISCO: temperatura muito baixa!';
+    } else if (temperatura > 30) {
+      bar.style.background = '#f85149';
+      val.style.color = '#f85149';
+      card.style.borderColor = '#da3633';
+      alert.className = 'alert quente';
+      msg.textContent = 'RISCO: temperatura muito alta!';
+    } else {
+      bar.style.background = '#39d353';
+      val.style.color = '#39d353';
+      card.style.borderColor = '#238636';
+      alert.className = 'alert ideal';
+      msg.textContent = 'Temperatura ideal para a estufa.';
+    }
+  }
+
+  // Opção 1: Aumentar temperatura
+  function opcao1() {
+    temperatura++;
+    atualizarDisplay();
+    addLog('Temperatura aumentada para: ' + temperatura + '°C', 'info');
+    verificarRisco();
+  }
+
+  // Opção 2: Reduzir temperatura
+  function opcao2() {
+    temperatura--;
+    atualizarDisplay();
+    addLog('Temperatura reduzida para: ' + temperatura + '°C', 'info');
+    verificarRisco();
+  }
+
+  // Opção 3: Mostrar temperatura atual
+  function opcao3() {
+    addLog('Temperatura atual: ' + temperatura + '°C', 'info');
+    if (temperatura < 15) {
+      addLog('AVISO: Temperatura muito baixa! Risco para as plantas.', 'warn');
+    } else if (temperatura > 30) {
+      addLog('AVISO: Temperatura muito alta! Risco para as plantas.', 'warn');
+    } else {
+      addLog('Temperatura ideal.', 'ok');
+    }
+  }
+
+  // Opção 4: Sair
+  function opcao4() {
+    addLog('Sistema encerrado. Temperatura final: ' + temperatura + '°C', 'exit');
+    document.getElementById('menu').classList.add('encerrado');
+  }
+
+  atualizarDisplay();
+</script>
+</body>
+</html>
