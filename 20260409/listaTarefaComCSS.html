@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #4a90e2;
+        }
+
+        button.adicionar {
+            padding: 10px 16px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button.adicionar:hover {
+            background-color: #357abd;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #4a90e2;
+            font-size: 14px;
+            color: #333;
+        }
+
+        button.excluir {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        button.excluir:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>LISTA DE TAREFAS</h2>
+
+        <div class="input-area">
+            <input id="tarefa" placeholder="Insira uma tarefa..." />
+            <button class="adicionar" onclick="clicar()">Adicionar</button>
+        </div>
+
+        <ul id="resultado"></ul>
+    </div>
+
+    <script>
+        function clicar() {
+            let tarefa = document.getElementById("tarefa").value;
+            let lista  = document.getElementById("resultado");
+
+            let item = document.createElement("li");
+            item.innerHTML = tarefa + '<button class="excluir" onclick="excluir(this)">X</button>';
+            lista.appendChild(item);
+
+            document.getElementById("tarefa").value = "";
+            document.getElementById("tarefa").focus();
+        }
+
+        function excluir(botao) {
+            let item  = botao.parentElement;
+            let lista = document.getElementById("resultado");
+            lista.removeChild(item);
+        }
+    </script>
+
+</body>
+</html>

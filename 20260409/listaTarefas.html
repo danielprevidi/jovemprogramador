@@ -26,6 +26,7 @@
             lista.appendChild(item);
 
             document.getElementById("tarefa").value = ""; //limpa o campo
+            document.getElementById("tarefa").focus(); //foco na caixa de entrada
         }
         function excluir(botao) {
             let item = botao.parentElement;
