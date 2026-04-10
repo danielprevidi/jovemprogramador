@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista</title>
+</head>
+<body>
+    <b><h2>LISTA DE TAREFAS</h2></b>
+
+     
+    <input id="tarefa" placeholder="Insira uma tarefa..." />
+    <button onclick="clicar()">Adicionar</button>
+     <ul id="resultado"></ul>  
+    
+
+    <script>
+        
+        function clicar() {
+            let tarefa = document.getElementById("tarefa").value;
+            let lista = document.getElementById("resultado");
+
+            let item = document.createElement("li");
+            item.innerHTML = tarefa + '<button onclick="excluir(this)">X</button>';
+            lista.appendChild(item);
+
+            document.getElementById("tarefa").value = ""; //limpa o campo
+        }
+        function excluir(botao) {
+            let item = botao.parentElement;
+            let lista = document.getElementById("resultado");
+            lista.removeChild(item);
+        }
+
+    </script>
+
+</body>
+
+</html>
