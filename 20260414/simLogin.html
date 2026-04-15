@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content:right;
+            padding: 40px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        p {
+            text-align: center;
+            color: red;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>LOGIN</h2>
+        <input id="usuario" placeholder="Usuário" />
+        <input id="senha" type="password" placeholder="Senha" />
+        <button onclick="logar()">Entrar</button>
+        <p id="mensagem"></p>
+    </div>
+
+    <script>
+        // usuários cadastrados "temporariamente"
+        let usuarios = [
+            { usuario: "admin",  senha: "1234" },
+            { usuario: "Joao",   senha: "abcd" },
+            { usuario: "maria",  senha: "5678" }
+        ];
+
+        function logar() {
+            let usuario = document.getElementById("usuario").value;
+            let senha   = document.getElementById("senha").value;
+            let mensagem = document.getElementById("mensagem");
+
+            let encontrado = usuarios.find(u => u.usuario === usuario && u.senha === senha);
+
+            if (encontrado) {
+                mensagem.style.color = "green";
+                mensagem.innerHTML = "Login realizado com sucesso! Bem vindo " + usuario;
+            } else {
+                mensagem.style.color = "red";
+                mensagem.innerHTML = "Usuário ou senha incorretos!";
+            }
+        }
+    </script>
+
+</body>
+</html>
