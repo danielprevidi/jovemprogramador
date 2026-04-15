@@ -21,6 +21,11 @@
             let tarefa = document.getElementById("tarefa").value;
             let lista = document.getElementById("resultado");
 
+            if (tarefa === "") {
+            alert("Digite uma tarefa!");
+            return;
+            }
+
             let item = document.createElement("li");
             item.innerHTML = tarefa + '<button onclick="excluir(this)">X</button>';
             lista.appendChild(item);
