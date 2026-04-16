@@ -1,0 +1,55 @@
+<!-- EXERCICIO DE TELA DE LOGIN
+1. O USUÁRIO SER UM EMAIL (@)
+2. SENHA COM NO MÍNIMO 8 CARACTERES
+3. NÃO PERMITIR CAMPOS EM BRANCO
+4. VALIDAR AS CREDENCIAIS
+5. REMOVER ESPAÇO NO FINAL DA SENHA
+6. ALERTAR EMAIL INVALIDO QUANDO O EMAIL POSSUI ESPAÇO-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>ACESSO RESTRITO</h2>
+    <br><input id="usuario" placeholder="usuario@email" /><br>
+    <br><br>
+    <input id="senha" type="password" placeholder="senha" />
+    <a href="https://www.google.com" target="_blank">Esqueceu a senha?</a>
+    <br><br>
+    <br><button onclick="logar()">Entrar</button><br>
+    <p id="mensagem"></p>
+    <script>
+
+        //usuario cadastrado
+        let usuarios = [
+            { usuario: "daniel@jp.com.br", senha: "dani1234" }
+        ];
+
+        function logar() {
+            let usuario = document.getElementById("usuario").value;
+
+            let senha = document.getElementById("senha").value;
+            let mensagem = document.getElementById("mensagem");
+
+            if (usuario === "" || senha === "") {
+                mensagem.innerHTML = "Insira um usuário e senha";
+                return;
+            } else if 
+                (usuarios.find(u => u.usuario === usuario && u.senha === senha)) {
+                mensagem.innerHTML = "Login efetuado com sucesso";
+                return;
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>
