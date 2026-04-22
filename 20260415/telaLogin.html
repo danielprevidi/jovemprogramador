@@ -32,21 +32,37 @@
             { usuario: "daniel@jp.com.br", senha: "dani1234" }
         ];
 
-        function logar() {
-            let usuario = document.getElementById("usuario").value;
+function logar() {
+    let usuario  = document.getElementById("usuario").value;
+    let senha    = document.getElementById("senha").value;
+    let mensagem = document.getElementById("mensagem");
 
-            let senha = document.getElementById("senha").value;
-            let mensagem = document.getElementById("mensagem");
+    // 1. campos em branco
+    if (usuario === "" || senha === "") {
+        mensagem.innerHTML = "Insira um usuário e senha";
+        return;
+    }
 
-            if (usuario === "" || senha === "") {
-                mensagem.innerHTML = "Insira um usuário e senha";
-                return;
-            } else if 
-                (usuarios.find(u => u.usuario === usuario && u.senha === senha)) {
-                mensagem.innerHTML = "Login efetuado com sucesso!";
-                return;
-            }
-        }
+    // 2. email com espaço
+    if (usuario.includes(" ")) {
+        mensagem.innerHTML = "Email inválido, não é permitido espaços";
+        return;
+    }
+
+    // 3. email sem @
+    if (!usuario.includes("@")) {
+        mensagem.innerHTML = "Insira um email válido";
+        return;
+    }
+
+    // 4. credenciais
+    if (usuarios.find(u => u.usuario === usuario && u.senha === senha)) {
+        mensagem.innerHTML = "Login efetuado com sucesso!";
+        return;
+    } else {
+        mensagem.innerHTML = "Usuário ou senha incorretos";
+    }
+}
     </script>
 
 
