@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <br>
+    <h2>CALCULADORA SIMPLES</h2><br>
+</head>
+<title>CALCULADORA</title>
+
+<body>
+
+    <input id="Valor1" placeholder="Valor 1" />
+    <br><input id="Valor2" placeholder="Valor 2" /><br>
+    <button id="meuBotao" onclick="somar()">+</button>
+    <button id="meuBotao" onclick="multiplicar()">x</button>
+    <button id="meuBotao" onclick="subtrair()">-</button>
+    <button id="meuBotao" onclick="dividir()">/</button>
+
+    <br><div id="saida"> <b>Resultado:</b> <p id="resultado"></p> </div><br>
+    
+    <script>
+        function somar() {
+            const v1 = Number(document.getElementById("Valor1").value);
+            const v2 = Number(document.getElementById("Valor2").value);
+            document.getElementById("resultado").innerHTML = (v1 + v2);
+        }
+
+        function multiplicar() {
+            const v1 = Number(document.getElementById("Valor1").value);
+            const v2 = Number(document.getElementById("Valor2").value);
+            document.getElementById("resultado").innerHTML = (v1 * v2);
+        }
+
+        function subtrair() {
+            const v1 = Number(document.getElementById("Valor1").value);
+            const v2 = Number(document.getElementById("Valor2").value);
+            document.getElementById("resultado").innerHTML = (v1 - v2);
+        }
+
+        function dividir() {
+            const v1 = Number(document.getElementById("Valor1").value);
+            const v2 = Number(document.getElementById("Valor2").value);
+            document.getElementById("resultado").innerHTML = (v1 / v2);
+        }
+    </script>
+
+</body>
+
+</html>
