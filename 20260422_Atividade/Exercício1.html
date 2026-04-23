@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Exercício 1</h2>
+    <input id="idade" placeholder="Informe a idade" />
+    <br><button id="botao" onclick="resultado()">Verificar</button><br>
+    <id="saida"> <b>Resultado:</b> <p id="resultado"></p>
+    <script>
+    
+    function resultado() {
+        let idade = Number(document.getElementById("idade").value);
+
+        if (idade == "") {
+            document.getElementById("resultado").innerHTML = ("Digite um valor.");
+        } else if (idade >= 18) {
+            document.getElementById("resultado").innerHTML = ("Maior de idade! Pode entrar.")
+            return;
+        } else  {
+            document.getElementById("resultado").innerHTML = ("Menor de idade! Proibida a entrada.")
+        }
+    }     
+
+    </script>
+</body>
+</html>

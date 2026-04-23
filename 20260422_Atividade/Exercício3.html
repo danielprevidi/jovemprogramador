@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Exercício 3</h2>
+    <input id="fala" placeholder="Palavra secreta" />
+    <br><button id="botao" onclick="resultado()">Falar</button><br>
+    <id="saida"> <b>Resultado:</b> <p id="resultado"></p>
+    <script>
+        function resultado() {
+            let fala = Number(document.getElementById("fala").value);           
+        if (fala == "") {
+            document.getElementById("resultado").innerHTML = ("Diga algo.");
+        } else if (fala = 'fogo') {
+            document.getElementById("resultado").innerHTML = ("Pode passar!")
+            return;
+        } else  {
+            document.getElementById("resultado").innerHTML = ("Ponte bloqueada.")
+        }
+
+            }
+
+    </script>
+</body>
+</html>

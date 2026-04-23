@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Exercício 2</h2>
+    <input id="moedas" placeholder="Quantidade de moedas" />
+    <br><button id="botao" onclick="resultado()">Comprar</button><br>
+    <id="saida"> <b>Resultado:</b> <p id="resultado"></p>
+    <script>
+    
+    function resultado() {
+        let moedas = Number(document.getElementById("moedas").value);
+6
+        if (moedas == "") {
+            document.getElementById("resultado").innerHTML = ("Digite um valor.");
+        } else if (moedas >= 100) {
+            document.getElementById("resultado").innerHTML = ("Você ganhou desconto!")
+            return;
+        } else  {
+            document.getElementById("resultado").innerHTML = ("Compra sem desconto.")
+        }
+    }     
+
+    </script>
+</body>
+</html>

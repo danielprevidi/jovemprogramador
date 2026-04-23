@@ -1,0 +1,9 @@
+let senha = "ouro";
+
+if (senha = "") {
+    console.log("Digite a senha")
+} else if (senha = "ouro") {
+    console.log("Senha correta.")
+} else {
+    console.log("Senha incorreta.")
+}
