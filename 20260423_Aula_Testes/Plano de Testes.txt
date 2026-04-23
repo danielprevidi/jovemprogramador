@@ -1,0 +1,58 @@
+1. OBJETIVO DOS TESTES
+    O testes tem como objetivo garantir o correto funcionamento do software em produção.
+    Os testes devem identificar possíveis erros, defeitos, falhas, fluxos lógicos incorretos nas rotinas e 
+    visando a melhor experiência na usabilidade do usuário final.
+
+2. METODOLOGIA DE TESTE
+    Utilizaremos as práticas previstas no ISTQB:
+    - Testes exploratório;
+    - Teste de caixa preta;
+    - Teste de caixa branca;
+    - Teste de caixa cinza.
+
+3. ESCOPO E TESTES
+    Os testes devem ser relizados na cálculadora e suas funções básicas:
+    - Utilizar todos os operadores: Soma, subtração, divisão e multiplicação;
+    - Utilizar valores inteiros e com casas decimais com todas os operadores;
+    - Executar o comando de operação com campos em brancos;
+    - Executar o comando de operação com um dos campos em branco;
+    - Realizar operações com valores que ultrapassam 15 dígitos.
+
+    Não serão testados as funcionalidades as funcionalidades raiz quadrada e cálculo de percentual.
+
+4. TIPOS DE TESTES APLICADOS
+    - Teste de unidade;
+    - Teste de sistema;
+    - Teste funcional;
+    - Teste de regressão;
+    - Teste de usabilidade;
+    - Teste de aceitação.
+
+5. FORMAS DE EXECUÇÃO
+    Nesta primeira etapapa, será utilizado somente os testes manuais.
+
+6. AMBIENTE DE TESTES
+    Os testes serão executados em abiente local, sem necessidade de conexão e de banco de dados.
+    Em ambiente Windows, será utilizado os seguintes softwares:
+    - VS Code;
+    - Navegador Edge.
+
+7. PAPEIS E RESPONSABILIDADES
+    Serão responsáveis pelos testes:
+    - Desenvolvedor do software.
+
+8. RISCOS E CONTINGÊNCIAS 
+    Os testes serão executados em ambiente de desenvolvimento.
+    Não há riscos na etapa de testes.
+
+9. FERRAMENTAS DE TESTES
+    Os testes serão realizados com foco em Testes Exploratórios, sem o auxílios de Softwares ou Frameworks.
+
+10. MÉTRICAS DE QUALIDADE
+    O resultado dos testes deve atingir no mínimo 95% de sucesso e no máximo 5 falhas para 
+    seguimento da liberação do software.
+    Deve ser emitido relatórios com especificações dos resultados dos testes.
+
+
+
+    
