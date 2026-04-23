@@ -1,0 +1,16 @@
+const senha = "dragn";
+const tentativas = ["errada", "dragon", "outra"];
+
+let abriu = false;
+
+for (let i = 0; i < 3; i++) {
+    if (tentativas[i] === senha) {
+        console.log("Portão aberto");
+        abriu = true;
+        break;
+    }
+}
+
+if (!abriu) {
+    console.log("Acesso bloqueado");
+}

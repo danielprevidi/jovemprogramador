@@ -1,0 +1,14 @@
+const compras = [150, 80, 200, 50, 120];
+let brindes = 0;
+
+for (let i = 0; i < 5; i++) {
+    const valor = compras[i];
+    if (valor > 100) {
+        console.log(`Cliente ${i + 1}: Ganhou brinde`);
+        brindes++;
+    } else {
+        console.log(`Cliente ${i + 1}: Sem brinde`);
+    }
+}
+
+console.log(`\nTotal com brinde: ${brindes}`);
