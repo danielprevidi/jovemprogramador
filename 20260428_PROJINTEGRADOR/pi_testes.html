@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+        }
+
+        .menu {
+            width: 220px;
+            background-color: #2c3e50;
+            height: 100vh;
+            padding: 20px 0;
+            transition: width 0.3s;
+            overflow: hidden;
+        }
+
+        .menu.recolhido { width: 0; }
+
+        .menu h2 {
+            color: white;
+            font-size: 18px;
+            white-space: nowrap;
+            padding: 0 14px;
+            margin-bottom: 30px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #bdc3c7;
+            text-decoration: none;
+            padding: 14px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .menu a:hover { background-color: #34495e; color: white; }
+        .menu a.ativo { background-color: #3498db; color: white; }
+
+        .btn-recolher {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            background-color: #2c3e50;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 4px;
+            z-index: 999;
+        }
+
+        .btn-recolher:hover { background-color: #34495e; }
+
+        .conteudo {
+            flex: 1;
+            padding: 40px 60px;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-y: auto;
+        }
+
+        .pagina { display: none; width: 100%; max-width: 600px; }
+        .pagina.ativa { display: block; }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+        }
+
+        .linha { display: flex; gap: 16px; margin-bottom: 16px; }
+
+        .campo { display: flex; flex-direction: column; flex: 1; }
+
+        .campo label { font-size: 12px; color: #666; margin-bottom: 4px; }
+
+        .campo input, .campo select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            background-color: #f9f9f9;
+        }
+
+        .campo input:focus, .campo select:focus {
+            border-color: #3498db;
+            background-color: white;
+        }
+
+        .campo input:disabled, .campo select:disabled {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .botoes { display: flex; gap: 12px; margin-top: 24px; }
+
+        .btn-salvar {
+            padding: 10px 24px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-salvar:hover { background-color: #2980b9; }
+
+        .btn-editar {
+            padding: 10px 24px;
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-editar:hover { background-color: #7f8c8d; }
+
+        .mensagem { margin-top: 16px; font-size: 13px; }
+
+        .dados-salvos {
+            margin-top: 24px;
+            border-top: 1px solid #eee;
+            padding-top: 16px;
+            display: none;
+        }
+
+        .dados-salvos h3 { font-size: 14px; color: #333; margin-bottom: 12px; }
+        .dados-salvos p  { font-size: 13px; color: #555; margin-bottom: 6px; }
+        .dados-salvos span { font-weight: bold; color: #333; }
+
+        /* CARD PACIENTE */
+        .card-paciente {
+            display: none;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            border-radius: 10px;
+            padding: 24px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .card-paciente .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 14px;
+        }
+
+        .card-paciente h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .card-paciente .info-linha {
+            font-size: 16px;
+            opacity: 0.85;
+            margin-bottom: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 15px;
+            margin-top: 12px;
+        }
+
+        /* MEDICAMENTOS */
+        .lista-med { margin-top: 20px; }
+
+        .item-med {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-med .info p  { font-size: 14px; color: #333; font-weight: bold; }
+        .item-med .info span { font-size: 12px; color: #666; }
+
+        .btn-excluir {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-excluir:hover { background-color: #c0392b; }
+
+        .vazio { font-size: 13px; color: #aaa; text-align: center; padding: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <button class="btn-recolher" onclick="recolher()">☰</button>
+
+    <div class="menu" id="menu">
+        <h2>SISTEMA</h2>
+        <a href="#" onclick="mostrar('inicio')"        class="ativo">🏠 Início</a>
+        <a href="#" onclick="mostrar('dados')"                      >👤 Dados básicos</a>
+        <a href="#" onclick="mostrar('medicamentos')"               >💊 Medicamentos</a>
+        <a href="#" onclick="mostrar('configuracoes')"              >⚙️ Configurações</a>
+        <a href="#"                                                  >🚪 Sair</a>
+    </div>
+
+    <div class="conteudo">
+
+        <!-- INÍCIO -->
+        <div class="pagina ativa" id="pagina-inicio">
+
+            <div class="card">
+                <h2>🏠 Bem vindo!</h2>
+                <p style="color:#666; font-size:14px;">Selecione uma opção no menu lateral.</p>
+            </div>
+
+            <div class="card-paciente" id="card-paciente">
+                <div class="avatar">👤</div>
+                <h3 id="i-nome"></h3>
+                <p class="info-linha">📄 CPF: <span id="i-cpf"></span></p>
+                <p class="info-linha">🎂 Nascimento: <span id="i-datanasc"></span></p>
+                <p class="info-linha">📍 <span id="i-endereco"></span></p>
+                <span class="badge">🩸 <span id="i-tipo"></span></span>
+            </div>
+
+        </div>
+
+        <!-- DADOS BÁSICOS -->
+        <div class="pagina" id="pagina-dados">
+            <div class="card">
+                <h2>👤 Dados Básicos</h2>
+                <div class="linha">
+                    <div class="campo">
+                        <label>Nome completo</label>
+                        <input id="nome" type="text" placeholder="Nome completo" disabled/>
+                    </div>
+                </div>
+                <div class="linha">
+                    <div class="campo">
+                        <label>CPF</label>
+                        <input id="cpf" type="text" placeholder="000.000.000-00" disabled/>
+                    </div>
+                    <div class="campo">
+                        <label>Data de nascimento</label>
+                        <input id="datanasc" type="date" disabled/>
+                    </div>
+                    <div class="campo" style="max-width:120px">
+                        <label>Tipo sanguíneo</label>
+                        <select id="tipo" disabled>
+                            <option value="">--</option>
+                            <option>A+</option><option>A-</option>
+                            <option>B+</option><option>B-</option>
+                            <option>AB+</option><option>AB-</option>
+                            <option>O+</option><option>O-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="linha">
+                    <div class="campo">
+                        <label>Rua</label>
+                        <input id="rua" type="text" placeholder="Nome da rua" disabled/>
+                    </div>
+                    <div class="campo" style="max-width:100px">
+                        <label>Número</label>
+                        <input id="numero" type="text" placeholder="Nº" disabled/>
+                    </div>
+                </div>
+                <div class="linha">
+                    <div class="campo">
+                        <label>Bairro</label>
+                        <input id="bairro" type="text" placeholder="Bairro" disabled/>
+                    </div>
+                    <div class="campo">
+                        <label>Cidade/UF</label>
+                        <input id="cidade" type="text" placeholder="Cidade - UF" disabled/>
+                    </div>
+                </div>
+                <div class="botoes">
+                    <button class="btn-editar" onclick="editar()">✏️ Editar</button>
+                    <button class="btn-salvar" onclick="salvar()">💾 Salvar</button>
+                </div>
+                <p class="mensagem" id="mensagem"></p>
+                <div class="dados-salvos" id="dados-salvos">
+                    <h3>✅ Dados salvos:</h3>
+                    <p>Nome: <span id="s-nome"></span></p>
+                    <p>CPF: <span id="s-cpf"></span></p>
+                    <p>Nascimento: <span id="s-datanasc"></span></p>
+                    <p>Tipo sanguíneo: <span id="s-tipo"></span></p>
+                    <p>Endereço: <span id="s-endereco"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MEDICAMENTOS -->
+        <div class="pagina" id="pagina-medicamentos">
+            <div class="card">
+                <h2>💊 Medicamentos</h2>
+                <div class="linha">
+                    <div class="campo">
+                        <label>Nome do medicamento</label>
+                        <input id="med-nome" type="text" placeholder="Ex: Losartana"/>
+                    </div>
+                </div>
+                <div class="linha">
+                    <div class="campo">
+                        <label>Dosagem</label>
+                        <input id="med-dosagem" type="number" placeholder="Ex: 50"/>
+                    </div>
+                    <div class="campo" style="max-width:100px">
+                        <label>Unidade</label>
+                        <select id="med-unidade">
+                            <option>mg</option>
+                            <option>mcg</option>
+                            <option>g</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label>Tratamento</label>
+                        <select id="med-tratamento">
+                            <option value="">Selecione...</option>
+                            <option>Hipertensão</option>
+                            <option>Diabetes</option>
+                            <option>Epilepsia</option>
+                            <option>Tireoide</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="botoes">
+                    <button class="btn-salvar" onclick="adicionarMed()">➕ Adicionar</button>
+                </div>
+                <p class="mensagem" id="med-mensagem"></p>
+                <div class="lista-med" id="lista-med">
+                    <p class="vazio">Nenhum medicamento cadastrado.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONFIGURAÇÕES -->
+        <div class="pagina" id="pagina-configuracoes">
+            <div class="card">
+                <h2>⚙️ Configurações</h2>
+                <p style="color:#666; font-size:14px;">Em desenvolvimento.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const links = document.querySelectorAll(".menu a");
+        links.forEach(link => {
+            link.addEventListener("click", function () {
+                links.forEach(l => l.classList.remove("ativo"));
+                this.classList.add("ativo");
+            });
+        });
+
+        function recolher() {
+            const menu = document.getElementById("menu");
+            const btn  = document.querySelector(".btn-recolher");
+            menu.classList.toggle("recolhido");
+            btn.innerHTML = menu.classList.contains("recolhido") ? "»" : "☰";
+        }
+
+        function mostrar(pagina) {
+            document.querySelectorAll(".pagina").forEach(p => p.classList.remove("ativa"));
+            document.getElementById("pagina-" + pagina).classList.add("ativa");
+        }
+
+        function editar() {
+            document.querySelectorAll("#pagina-dados .campo input, #pagina-dados .campo select")
+                .forEach(c => c.disabled = false);
+            document.getElementById("mensagem").innerHTML = "";
+        }
+
+        function salvar() {
+            const nome     = document.getElementById("nome").value;
+            const cpf      = document.getElementById("cpf").value;
+            const datanasc = document.getElementById("datanasc").value;
+            const tipo     = document.getElementById("tipo").value;
+            const rua      = document.getElementById("rua").value;
+            const numero   = document.getElementById("numero").value;
+            const bairro   = document.getElementById("bairro").value;
+            const cidade   = document.getElementById("cidade").value;
+            const msg      = document.getElementById("mensagem");
+
+            if (nome === "" || cpf === "") {
+                msg.style.color = "red";
+                msg.innerHTML = "Nome e CPF são obrigatórios!";
+                return;
+            }
+
+            const endereco = `${rua}, ${numero} - ${bairro} - ${cidade}`;
+
+            document.getElementById("s-nome").innerHTML     = nome;
+            document.getElementById("s-cpf").innerHTML      = cpf;
+            document.getElementById("s-datanasc").innerHTML = datanasc;
+            document.getElementById("s-tipo").innerHTML     = tipo;
+            document.getElementById("s-endereco").innerHTML = endereco;
+
+            document.getElementById("i-nome").innerHTML     = nome;
+            document.getElementById("i-cpf").innerHTML      = cpf;
+            document.getElementById("i-datanasc").innerHTML = datanasc;
+            document.getElementById("i-tipo").innerHTML     = tipo;
+            document.getElementById("i-endereco").innerHTML = endereco;
+            document.getElementById("card-paciente").style.display = "block";
+
+            document.querySelectorAll("#pagina-dados .campo input, #pagina-dados .campo select")
+                .forEach(c => c.disabled = true);
+
+            msg.style.color = "green";
+            msg.innerHTML = "Dados salvos com sucesso!";
+            document.getElementById("dados-salvos").style.display = "block";
+        }
+
+        let medicamentos = [];
+
+        function adicionarMed() {
+            const nome       = document.getElementById("med-nome").value;
+            const dosagem    = document.getElementById("med-dosagem").value;
+            const unidade    = document.getElementById("med-unidade").value;
+            const tratamento = document.getElementById("med-tratamento").value;
+            const msg        = document.getElementById("med-mensagem");
+
+            if (nome === "" || dosagem === "" || tratamento === "") {
+                msg.style.color = "red";
+                msg.innerHTML = "Preencha todos os campos!";
+                return;
+            }
+
+            medicamentos.push({ nome, dosagem, unidade, tratamento });
+            msg.style.color = "green";
+            msg.innerHTML = "Medicamento adicionado!";
+
+            document.getElementById("med-nome").value = "";
+            document.getElementById("med-dosagem").value = "";
+            document.getElementById("med-tratamento").value = "";
+            document.getElementById("med-nome").focus();
+
+            renderizarMeds();
+        }
+
+        function renderizarMeds() {
+            const lista = document.getElementById("lista-med");
+            lista.innerHTML = "";
+
+            if (medicamentos.length === 0) {
+                lista.innerHTML = '<p class="vazio">Nenhum medicamento cadastrado.</p>';
+                return;
+            }
+
+            medicamentos.forEach((med, index) => {
+                const item = document.createElement("div");
+                item.className = "item-med";
+                item.innerHTML = `
+                    <div class="info">
+                        <p>💊 ${med.nome}</p>
+                        <span>${med.dosagem} ${med.unidade} — ${med.tratamento}</span>
+                    </div>
+                    <button class="btn-excluir" onclick="excluirMed(${index})">✕ Remover</button>
+                `;
+                lista.appendChild(item);
+            });
+        }
+
+        function excluirMed(index) {
+            medicamentos.splice(index, 1);
+            renderizarMeds();
+        }
+    </script>
+
+</body>
+</html>
